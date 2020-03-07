@@ -63,7 +63,7 @@ document.querySelector(".btn-hold").addEventListener("click", function() {
       score[activePlayer];
 
     //100-s ih onootoi bolson eseh
-    if (score[activePlayer] >= 15) {
+    if (score[activePlayer] >= 100) {
       isNewGame = false;
       document.getElementById("name-" + activePlayer).textContent = "WINNER!!!";
       document
