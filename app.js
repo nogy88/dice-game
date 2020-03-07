@@ -28,11 +28,35 @@ document.querySelector(".btn-roll").addEventListener("click", function() {
     roundScore = roundScore + diceNumber;
     document.getElementById("current-" + activePlayer).textContent = roundScore;
   } else {
-    roundScore = 0;
-    document.getElementById("current-" + activePlayer).textContent = 0;
-    activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
-    document.querySelector(".player-0-panel").classList.toggle("active");
-    document.querySelector(".player-1-panel").classList.toggle("active");
-    diceDom.style.display = "none";
+    switchToNextPlayer();
   }
 });
+
+//Hold button event
+document.querySelector(".btn-hold").addEventListener("click", function() {
+  score[activePlayer] += roundScore;
+
+  //Niit avsan onoog n haruulah
+  document.getElementById("score-" + activePlayer).textContent =
+    score[activePlayer];
+
+  //100-s ih onootoi bolson eseh
+  if (score[activePlayer] >= 15) {
+    document.getElementById("name-" + activePlayer).textContent = "WINNER!!!";
+    document
+      .querySelector(".player-" + activePlayer + "-panel")
+      .classList.add("winner");
+    document
+      .querySelector(".player-" + activePlayer + "-panel")
+      .classList.remove("active");
+  } else switchToNextPlayer();
+});
+
+function switchToNextPlayer() {
+  roundScore = 0;
+  document.getElementById("current-" + activePlayer).textContent = 0;
+  activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
+  document.querySelector(".player-0-panel").classList.toggle("active");
+  document.querySelector(".player-1-panel").classList.toggle("active");
+  diceDom.style.display = "none";
+}
