@@ -1,3 +1,5 @@
+//Төлөвийн хувьсагч
+var isNewGame;
 //Тоглогчийн ээлжийг хадгалах хувьсагч
 var activePlayer;
 //Тоглогчдын цуглуулсан оноог хадгалах хувьсагч
@@ -10,6 +12,7 @@ var diceDom = document.querySelector(".dice");
 RestartGame();
 
 function RestartGame() {
+  isNewGame = true;
   activePlayer = 0;
   score = [0, 0];
   roundScore = 0;
@@ -34,36 +37,43 @@ function RestartGame() {
 }
 
 document.querySelector(".btn-roll").addEventListener("click", function() {
-  var diceNumber = Math.floor(Math.random() * 6) + 1;
-  diceDom.style.display = "block";
-  diceDom.src = "dice-" + diceNumber + ".png";
+  if (isNewGame === true) {
+    var diceNumber = Math.floor(Math.random() * 6) + 1;
+    diceDom.style.display = "block";
+    diceDom.src = "dice-" + diceNumber + ".png";
 
-  if (diceNumber !== 1) {
-    roundScore = roundScore + diceNumber;
-    document.getElementById("current-" + activePlayer).textContent = roundScore;
-  } else {
-    switchToNextPlayer();
+    if (diceNumber !== 1) {
+      roundScore = roundScore + diceNumber;
+      document.getElementById(
+        "current-" + activePlayer
+      ).textContent = roundScore;
+    } else {
+      switchToNextPlayer();
+    }
   }
 });
 
 //Hold button event
 document.querySelector(".btn-hold").addEventListener("click", function() {
-  score[activePlayer] += roundScore;
+  if (isNewGame === true) {
+    score[activePlayer] += roundScore;
 
-  //Niit avsan onoog n haruulah
-  document.getElementById("score-" + activePlayer).textContent =
-    score[activePlayer];
+    //Niit avsan onoog n haruulah
+    document.getElementById("score-" + activePlayer).textContent =
+      score[activePlayer];
 
-  //100-s ih onootoi bolson eseh
-  if (score[activePlayer] >= 15) {
-    document.getElementById("name-" + activePlayer).textContent = "WINNER!!!";
-    document
-      .querySelector(".player-" + activePlayer + "-panel")
-      .classList.add("winner");
-    document
-      .querySelector(".player-" + activePlayer + "-panel")
-      .classList.remove("active");
-  } else switchToNextPlayer();
+    //100-s ih onootoi bolson eseh
+    if (score[activePlayer] >= 15) {
+      isNewGame = false;
+      document.getElementById("name-" + activePlayer).textContent = "WINNER!!!";
+      document
+        .querySelector(".player-" + activePlayer + "-panel")
+        .classList.add("winner");
+      document
+        .querySelector(".player-" + activePlayer + "-panel")
+        .classList.remove("active");
+    } else switchToNextPlayer();
+  }
 });
 
 function switchToNextPlayer() {
